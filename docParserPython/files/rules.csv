@@ -1,0 +1,3 @@
+﻿Clarify,Field Name,,Alternative name,Field type,CER location,Location Type,SSCP destination Part A,Destination type Part A,SSCP destination Part B,Language conversion needed for Part B?,Destination type Part B,NOTE,Comment
+2,Manufacturer(s); name and address,#2 Manufacturer's Name and Address,N/A,free text,2,Table (CER Administrative Information),1.2,free text,"1, bullet 2",No,free text,,
+4,Device Model,#4 Device Model,Group Name,free text,2,Table (CER Administrative Information),1.4,table column 1,"1, bullet 3",No,table column 1,,

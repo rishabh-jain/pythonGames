@@ -1,13 +1,14 @@
 import csv
 
 from docx import Document
+from docx.oxml import OxmlElement
 from docx.table import Table
 from docx.shared import Inches
 
 
 # read csv for rule set data
 def readRuleSetCSV():
-    with open('/Users/rishabhjain/Downloads/rules.csv', 'r') as f:
+    with open('./files/rules.csv', 'r') as f:
         reader = csv.reader(f)
         rules = list(reader)
     return rules
@@ -78,7 +79,7 @@ def printRuleSet():
 
 # read input docx file
 def readInputDocxFile():
-    document = Document('/Users/rishabhjain/Downloads/OneDrive_1_4-6-2023/Word-word-conversion/Artifacts/input.docx')
+    document = Document('./files/input.docx')
     return document
 
 # print all heading 1 and heading 2
@@ -93,14 +94,14 @@ def printHeading(document):
 
 # read template docx file
 def readTemplateDocxFile():
-    document = Document('/Users/rishabhjain/Downloads/OneDrive_1_4-6-2023/Word-word-conversion/Artifacts/SSCP_Template_Rev10.docx')
+    document = Document('./files/SSCP_Template_Rev10.docx')
     return document
 
 #printHeading(readTemplateDocxFile())
 
 # save the updated template docx file
 def saveDocxFile(document):
-    document.save('/Users/rishabhjain/Downloads/OneDrive_1_4-6-2023/Word-word-conversion/Artifacts/output.docx')
+    document.save('./files/output.docx')
 
 
 # for each rule set locate data in input docx file, update template docx file
@@ -117,14 +118,27 @@ def enforceRules():
             tableName = ruleSet.locationType[7:-1].split(")")[0]
             # find table number by locating the table name
             tableNumber = 0
+
+            inputDocument.add_paragraph(tableName)
+
             for para in inputDocument.paragraphs:
                 # get caption of table
-                # get table by caption
-                if tableName in para.text:
-                    tableNumber = para._element
-                    
-                    tableNumber = tableNumber.getparent()
-                    print(tableNumber)
+                # get reference 
+                # get table number from caption reference 
+                if para.style.name == 'Caption':
+                    if tableName in para.text:
+                        # read xml of para
+
+                        # get reference
+                        xmlObjRef = para._element.xml
+
+                        # convert to xml object
+                        xmlObj = OxmlElement(xmlObjRef)
+
+
+                        tableNumber = int(para.text.split(" ")[-1])
+                        break
+
             
             # get table from input docx file
             table = inputDocument.tables[tableNumber]
